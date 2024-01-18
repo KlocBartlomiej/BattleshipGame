@@ -15,6 +15,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_send_clicked();
+    void on_input_cursorPositionChanged();
+
 private:
     Ui::MainWindow *ui;
 };
