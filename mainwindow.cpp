@@ -7,13 +7,40 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     BattlefieldController battlefiedController =
         BattlefieldController(ui->battlefield, ui->enemyBattlefield);
-    bool isEnemyGround = true;
-    for(int i = 0; i < 10; i++)
+
+    char fieldXIndicator = 'A';
+    QLabel* xIndicator;
+    int iIndex = 0;
+
+    for(int j = 1; j < 11; j++, fieldXIndicator++)
     {
-        for(int j = 0; j < 10; j++)
+        xIndicator = getLabelFromChar(fieldXIndicator);
+        ui->battlefield->addWidget(xIndicator,iIndex, j);
+
+        xIndicator = getLabelFromChar(fieldXIndicator);
+        ui->enemyBattlefield->addWidget(xIndicator,iIndex, j);
+    }
+
+    bool isEnemyGround = true;
+    QLabel* yIndicator;
+
+    for(int i = 1; i < 11; i++)
+    {
+        for(int j = 0; j < 11; j++)
         {
+            if(j == 0)
+            {
+                yIndicator = getLabelFromInt(i);
+                ui->battlefield->addWidget(yIndicator, i, j);
+
+                yIndicator = getLabelFromInt(i);
+                ui->enemyBattlefield->addWidget(yIndicator, i, j);
+
+                continue;
+            }
             ui->battlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), !isEnemyGround), i, j);
             ui->enemyBattlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), isEnemyGround), i, j);
         }
@@ -25,6 +52,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QLabel* MainWindow::getLabelFromChar(char c)
+{
+    QLabel* label = new QLabel();
+    label->setText(QString(c));
+    label->setAlignment(Qt::AlignmentFlag::AlignCenter);
+    return label;
+}
+
+QLabel* MainWindow::getLabelFromInt(int i)
+{
+    QLabel* label = new QLabel();
+    label->setText(QString::number(i));
+    label->setAlignment(Qt::AlignmentFlag::AlignCenter);
+    return label;
+}
 
 void MainWindow::on_send_clicked()
 {

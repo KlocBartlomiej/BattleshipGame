@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,5 +22,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QLabel* getLabelFromChar(char);
+    QLabel* getLabelFromInt(int);
 };
 #endif // MAINWINDOW_H

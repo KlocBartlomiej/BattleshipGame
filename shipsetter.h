@@ -6,7 +6,9 @@
 class ShipSetter : public QObject
 {
     Q_OBJECT
-    int xDirection, yDirection;
+    bool isPlaceCapableOfHoldingShip;
+    int xLastHovered, yLastHovered;
+    int xDrawingDirection, yDrawingDirection;
 public:
     ShipSetter();
     void battlefieldClickOn(int, int);
