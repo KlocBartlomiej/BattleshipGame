@@ -9,12 +9,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     BattlefieldController battlefiedController =
         BattlefieldController(ui->battlefield, ui->enemyBattlefield);
+    bool isEnemyGround = true;
     for(int i = 0; i < 10; i++)
     {
         for(int j = 0; j < 10; j++)
         {
-            ui->battlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j)), i, j);
-            ui->enemyBattlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j)), i, j);
+            ui->battlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), !isEnemyGround), i, j);
+            ui->enemyBattlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), isEnemyGround), i, j);
         }
     }
 }
