@@ -2,7 +2,8 @@
 #include <QDebug>
 
 ShipSetter::ShipSetter(QGridLayout * battlefield)
-    :battlefield(battlefield){}
+    :battlefield(battlefield)
+    , ships(10){}
 
 void ShipSetter::changeDrawingDirection()
 {
@@ -31,4 +32,9 @@ void ShipSetter::battlefieldHoveredOn(int x, int y)
 
     xLastHovered = x;
     yLastHovered = y;
+}
+
+QList<Ship> ShipSetter::getShips()
+{
+    return ships;
 }
