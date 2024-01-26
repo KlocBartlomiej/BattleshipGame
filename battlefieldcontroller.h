@@ -10,16 +10,19 @@ class BattlefieldController
     QGridLayout* battlefield;
     QGridLayout* enemyBattlefield;
 
+public:
+    BattlefieldController(QGridLayout*, QGridLayout*);
+
     ShipSetter* shipSetter;
 
-public:
+    bool isGameStarted;
+
     MyFrame* setNew(MyFrame*,bool);
     MyFrame* setEmpty(MyFrame*);
     MyFrame* setShip(MyFrame*);
+    bool isShip(int x, int y);
     MyFrame* setMiss(MyFrame*);
     MyFrame* setHit(MyFrame*);
-
-    BattlefieldController(QGridLayout*, QGridLayout*);
 };
 
 #endif // BATTLEFIELDCONTROLLER_H

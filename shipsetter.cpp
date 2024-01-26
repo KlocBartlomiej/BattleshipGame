@@ -1,11 +1,23 @@
 #include "shipsetter.h"
 #include <QDebug>
 
-ShipSetter::ShipSetter()
-{
+ShipSetter::ShipSetter(QGridLayout * battlefield)
+    :battlefield(battlefield){}
 
+void ShipSetter::changeDrawingDirection()
+{
+    std::swap(this->xDrawingDirection,this->yDrawingDirection);
 }
 
+bool ShipSetter::isPlaceCapableOfHoldingShip(int x, int y)
+{
+    return true;
+}
+
+bool ShipSetter::isPlaceNotColidingWithOtherShip(int x, int y)
+{
+    return true;
+}
 
 void ShipSetter::battlefieldClickOn(int x, int y)
 {
@@ -19,9 +31,4 @@ void ShipSetter::battlefieldHoveredOn(int x, int y)
 
     xLastHovered = x;
     yLastHovered = y;
-}
-
-void ShipSetter::enemyBattlefieldClickOn(int x, int y)
-{
-    qDebug() << "enemy battlefield clicked at " << x << " " << y;
 }

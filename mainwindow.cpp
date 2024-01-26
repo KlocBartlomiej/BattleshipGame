@@ -5,11 +5,11 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , battlefiedController(nullptr,nullptr)
 {
     ui->setupUi(this);
 
-    BattlefieldController battlefiedController =
-        BattlefieldController(ui->battlefield, ui->enemyBattlefield);
+    battlefiedController = BattlefieldController(ui->battlefield, ui->enemyBattlefield);
 
     char fieldXIndicator = 'A';
     QLabel* xIndicator;
@@ -24,32 +24,39 @@ MainWindow::MainWindow(QWidget *parent)
         ui->enemyBattlefield->addWidget(xIndicator,iIndex, j);
     }
 
-    bool isEnemyGround = true;
     QLabel* yIndicator;
+    int jIndex = 0;
 
     for(int i = 1; i < 11; i++)
     {
-        for(int j = 0; j < 11; j++)
-        {
-            if(j == 0)
-            {
-                yIndicator = getLabelFromInt(i);
-                ui->battlefield->addWidget(yIndicator, i, j);
+        yIndicator = getLabelFromInt(i);
+        ui->battlefield->addWidget(yIndicator, i, jIndex);
 
-                yIndicator = getLabelFromInt(i);
-                ui->enemyBattlefield->addWidget(yIndicator, i, j);
-
-                continue;
-            }
-            ui->battlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), !isEnemyGround), i, j);
-            ui->enemyBattlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), isEnemyGround), i, j);
-        }
+        yIndicator = getLabelFromInt(i);
+        ui->enemyBattlefield->addWidget(yIndicator, i, jIndex);
     }
+
+    clearBattlefields();
+    printHelp();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::clearBattlefields()
+{
+    bool isEnemyGround = true;
+
+    for(int i = 1; i < 11; i++)
+    {
+        for(int j = 1; j < 11; j++)
+        {
+            ui->battlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), !isEnemyGround), i, j);
+            ui->enemyBattlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), isEnemyGround), i, j);
+        }
+    }
 }
 
 QLabel* MainWindow::getLabelFromChar(char c)
@@ -68,12 +75,51 @@ QLabel* MainWindow::getLabelFromInt(int i)
     return label;
 }
 
-void MainWindow::on_send_clicked()
+void MainWindow::printHelp()
 {
-    ui->chat->append(ui->input->toPlainText());
-    ui->input->clear();
+    ui->chat->append("You can choose:\
+        \ntype \"/bot\" to start new game agains the computer\
+        \ntype \"/connect\" to start a game agains player which will connect to you\
+        \ntype \"/newGameWithTheSamePlayer\" to start another game with the same player without connecting\
+        \ntype \"/rotate\" to change ship orientation\
+    ");
 }
 
+void MainWindow::on_send_clicked()
+{
+    QString userInput = ui->input->toPlainText();
+    if(userInput.startsWith("/") and !battlefiedController.isGameStarted)
+    {
+        qDebug() << "userInput: " << userInput;
+        if(userInput == "/bot")
+        {
+            clearBattlefields();
+            //startGameWithBot();
+        }
+        else if(userInput == "/connect")
+        {
+            clearBattlefields();
+            //establishConnection(); or wait for player to connect (print ip and port in the chat)
+            //startGameWithPlayer;
+        }
+        else if(userInput == "/newGameWithTheSamePlayer")
+        {
+            //startGameWithPlayer;
+        }
+        else if (userInput == "/rotate")
+        {
+            battlefiedController.shipSetter->changeDrawingDirection();
+        }
+        else
+        {
+            printHelp();
+        }
+        ui->input->clear();
+        return;
+    }
+    ui->chat->append(userInput);
+    ui->input->clear();
+}
 
 //TODO create my own keyPressed(QEvent::KeyPress *event)
 void MainWindow::on_input_cursorPositionChanged()
