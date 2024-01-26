@@ -3,15 +3,17 @@
 
 #include<iostream>
 #include <QList>
+#include <list>
 
 class Ship
 {
-    QList<std::tuple<int,int>> ship;
+    std::list<std::tuple<int,int>> ship;
 public:
-    Ship(int);
+    Ship();
     void addShipMast(const std::tuple<int,int>);
     bool searchAndRemove(const std::tuple<int,int>);
     bool isShipSunken();
+    //TODO add function which will exclude all neighbors for bot to aim for
 };
 
 #endif // SHIP_H

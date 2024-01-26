@@ -14,15 +14,8 @@ public:
     BattlefieldController(QGridLayout*, QGridLayout*);
 
     ShipSetter* shipSetter;
-
     bool isGameStarted;
-
     MyFrame* setNew(MyFrame*,bool);
-    MyFrame* setEmpty(MyFrame*);
-    MyFrame* setShip(MyFrame*);
-    bool isShip(int x, int y);
-    MyFrame* setMiss(MyFrame*);
-    MyFrame* setHit(MyFrame*);
 };
 
 #endif // BATTLEFIELDCONTROLLER_H

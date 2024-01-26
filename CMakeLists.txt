@@ -27,7 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         battlefieldcontroller.h battlefieldcontroller.cpp
-        myframe.h
+        myframe.h myframe.cpp
         shipsetter.h shipsetter.cpp
         ship.h ship.cpp
     )

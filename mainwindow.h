@@ -27,6 +27,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    void prepareBattlefield();
     void clearBattlefields();
     void printHelp();
 

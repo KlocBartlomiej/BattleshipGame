@@ -1,18 +1,18 @@
 #include "ship.h"
 
-Ship::Ship(int shipMasts)
-    :ship(shipMasts){}
+Ship::Ship(){}
 
 void Ship::addShipMast(const std::tuple<int,int> shipMast)
 {
-    ship.append(shipMast);
+    ship.push_front(shipMast);
 }
 
 bool Ship::searchAndRemove(const std::tuple<int,int> shipMast)
 {
-    if(ship.contains(shipMast))
+    auto it = std::find(ship.begin(), ship.end(), shipMast);
+    if(it != ship.end())
     {
-        ship.removeOne(shipMast);
+        ship.remove(shipMast);
         return true;
     }
     return false;

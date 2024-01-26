@@ -48,7 +48,7 @@ MainWindow::~MainWindow()
 void MainWindow::clearBattlefields()
 {
     bool isEnemyGround = true;
-
+    //TODO clear list of ships for backend when clearing UI
     for(int i = 1; i < 11; i++)
     {
         for(int j = 1; j < 11; j++)
@@ -75,6 +75,13 @@ QLabel* MainWindow::getLabelFromInt(int i)
     return label;
 }
 
+void MainWindow::prepareBattlefield()
+{
+    clearBattlefields();
+    ui->chat->append("Please place your ships. Keep in mind you can \"/rotate\" them.");
+    battlefiedController.shipSetter->setAllShips();
+}
+
 void MainWindow::printHelp()
 {
     ui->chat->append("You can choose:\
@@ -91,22 +98,24 @@ void MainWindow::on_send_clicked()
     if(userInput.startsWith("/") and !battlefiedController.isGameStarted)
     {
         qDebug() << "userInput: " << userInput;
-        if(userInput == "/bot")
+        if(userInput == "/bot" || userInput == "/bot\n")
         {
-            clearBattlefields();
+            qDebug() << "/bot option was choosen";
+            prepareBattlefield();
             //startGameWithBot();
         }
-        else if(userInput == "/connect")
+        else if(userInput == "/connect" || userInput == "/connect\n")
         {
-            clearBattlefields();
+            prepareBattlefield();
             //establishConnection(); or wait for player to connect (print ip and port in the chat)
             //startGameWithPlayer;
         }
-        else if(userInput == "/newGameWithTheSamePlayer")
+        else if(userInput == "/newGameWithTheSamePlayer" || userInput == "/newGameWithTheSamePlayer\n")
         {
+            prepareBattlefield();
             //startGameWithPlayer;
         }
-        else if (userInput == "/rotate")
+        else if (userInput == "/rotate" || userInput == "/rotate\n")
         {
             battlefiedController.shipSetter->changeDrawingDirection();
         }

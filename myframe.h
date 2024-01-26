@@ -2,6 +2,7 @@
 #define MYFRAME_H
 
 #include <QFrame>
+#include <QGridLayout>
 
 class MyFrame : public QFrame{
     Q_OBJECT
@@ -12,6 +13,14 @@ public:
     int getY(){ return y; }
     void mousePressEvent(QMouseEvent* event){ emit clickedOn(x,y);}
     void mouseMoveEvent(QMouseEvent* event){ emit hoveredOn(x,y);}
+
+    void setNew();
+    static void setEmpty(int,int,QGridLayout*);
+    static void setShip(int,int,QGridLayout*);
+    static bool isShip(int x, int y,QGridLayout*);
+    static void setMiss(int,int,QGridLayout*);
+    static void setHit(int,int,QGridLayout*);
+
  signals:
     void clickedOn(int x, int y);
     void hoveredOn(int x, int y);
