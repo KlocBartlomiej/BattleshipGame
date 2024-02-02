@@ -78,6 +78,7 @@ QLabel* MainWindow::getLabelFromInt(int i)
 void MainWindow::prepareBattlefield()
 {
     clearBattlefields();
+    ui->chat->clear();
     ui->chat->append("Please place your ships. Keep in mind you can \"/rotate\" them.");
     battlefiedController.shipSetter->setAllShips();
 }
@@ -95,6 +96,11 @@ void MainWindow::printHelp()
 void MainWindow::on_send_clicked()
 {
     QString userInput = ui->input->toPlainText();
+    if (userInput == "/rotate" || userInput == "/rotate\n")
+    {
+        battlefiedController.shipSetter->changeDrawingDirection();
+        return;
+    }
     if(userInput.startsWith("/") and !battlefiedController.isGameStarted)
     {
         qDebug() << "userInput: " << userInput;
@@ -102,22 +108,21 @@ void MainWindow::on_send_clicked()
         {
             qDebug() << "/bot option was choosen";
             prepareBattlefield();
+            battlefiedController.isGameStarted = true;
             //startGameWithBot();
         }
         else if(userInput == "/connect" || userInput == "/connect\n")
         {
             prepareBattlefield();
+            battlefiedController.isGameStarted = true;
             //establishConnection(); or wait for player to connect (print ip and port in the chat)
             //startGameWithPlayer;
         }
         else if(userInput == "/newGameWithTheSamePlayer" || userInput == "/newGameWithTheSamePlayer\n")
         {
             prepareBattlefield();
+            battlefiedController.isGameStarted = true;
             //startGameWithPlayer;
-        }
-        else if (userInput == "/rotate" || userInput == "/rotate\n")
-        {
-            battlefiedController.shipSetter->changeDrawingDirection();
         }
         else
         {

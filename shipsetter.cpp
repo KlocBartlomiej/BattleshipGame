@@ -74,8 +74,7 @@ void ShipSetter::battlefieldClickOn(const int x, const int y)
     if(numberOfShipMasts.empty())
     {
         areShipsSet = true;
-        //TODO if numberOfShipMasts.empty() setting ships is finished
-        //at this point we can emit signal that means ships list is ready and battlefield.isGameStarted can be set to true
+        emit shipsAreSet();
     }
 }
 

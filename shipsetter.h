@@ -36,6 +36,9 @@ public:
 public slots:
     void battlefieldClickOn(const int, const int);
     void battlefieldHoveredOn(const int, const int);
+
+signals:
+    void shipsAreSet();
 };
 
 #endif // SHIPSETTER_H

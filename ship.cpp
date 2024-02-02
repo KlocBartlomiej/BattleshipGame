@@ -12,7 +12,7 @@ bool Ship::searchAndRemove(const std::tuple<int,int> shipMast)
     auto it = std::find(ship.begin(), ship.end(), shipMast);
     if(it != ship.end())
     {
-        ship.remove(shipMast);
+        ship.erase(it);
         return true;
     }
     return false;
