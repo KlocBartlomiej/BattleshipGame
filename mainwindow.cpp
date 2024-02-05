@@ -1,26 +1,25 @@
 #include "mainwindow.h"
-#include "battlefieldcontroller.h"
 #include "./ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , battlefiedController(nullptr,nullptr)
+    , battlefieldController(nullptr,nullptr,false)
 {
     ui->setupUi(this);
 
-    battlefiedController = BattlefieldController(ui->battlefield, ui->enemyBattlefield);
+    battlefieldController = BattlefieldController(ui->battlefield, ui->enemyBattlefield,false);
 
-    char fieldXIndicator = 'A';
+    char fieldXContent = 'A';
     QLabel* xIndicator;
     int iIndex = 0;
 
-    for(int j = 1; j < 11; j++, fieldXIndicator++)
+    for(int j = 1; j < 11; j++, fieldXContent++)
     {
-        xIndicator = getLabelFromChar(fieldXIndicator);
+        xIndicator = getLabelFromChar(fieldXContent);
         ui->battlefield->addWidget(xIndicator,iIndex, j);
 
-        xIndicator = getLabelFromChar(fieldXIndicator);
+        xIndicator = getLabelFromChar(fieldXContent);
         ui->enemyBattlefield->addWidget(xIndicator,iIndex, j);
     }
 
@@ -36,7 +35,19 @@ MainWindow::MainWindow(QWidget *parent)
         ui->enemyBattlefield->addWidget(yIndicator, i, jIndex);
     }
 
-    clearBattlefields();
+    bool isEnemyGround = true;
+    for(int i = 1; i < 11; i++)
+    {
+        for(int j = 1; j < 11; j++)
+        {
+            ui->battlefield->addWidget(
+                battlefieldController.setNew(
+                    new MyFrame(i,j), !isEnemyGround), i, j);
+            ui->enemyBattlefield->addWidget(
+                battlefieldController.setNew(
+                    new MyFrame(i,j), isEnemyGround), i, j);
+        }
+    }
     printHelp();
 }
 
@@ -47,14 +58,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::clearBattlefields()
 {
-    bool isEnemyGround = true;
     //TODO clear list of ships for backend when clearing UI
     for(int i = 1; i < 11; i++)
     {
         for(int j = 1; j < 11; j++)
         {
-            ui->battlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), !isEnemyGround), i, j);
-            ui->enemyBattlefield->addWidget(battlefiedController.setNew(new MyFrame(i,j), isEnemyGround), i, j);
+            MyFrame::setEmpty(i,j,ui->battlefield);
+            MyFrame::setEmpty(i,j,ui->enemyBattlefield);
         }
     }
 }
@@ -80,7 +90,7 @@ void MainWindow::prepareBattlefield()
     clearBattlefields();
     ui->chat->clear();
     ui->chat->append("Please place your ships. Keep in mind you can \"/rotate\" them.");
-    battlefiedController.shipSetter->setAllShips();
+    battlefieldController.shipSetter->setAllShips();
 }
 
 void MainWindow::printHelp()
@@ -98,30 +108,32 @@ void MainWindow::on_send_clicked()
     QString userInput = ui->input->toPlainText();
     if (userInput == "/rotate" || userInput == "/rotate\n")
     {
-        battlefiedController.shipSetter->changeDrawingDirection();
+        battlefieldController.shipSetter->changeDrawingDirection();
         return;
     }
-    if(userInput.startsWith("/") and !battlefiedController.isGameStarted)
+    if(userInput.startsWith("/") and !battlefieldController.gameInstance->hasGameStarted())
     {
         qDebug() << "userInput: " << userInput;
         if(userInput == "/bot" || userInput == "/bot\n")
         {
             qDebug() << "/bot option was choosen";
             prepareBattlefield();
-            battlefiedController.isGameStarted = true;
+            battlefieldController.gameInstance->gameStarted();
+            battlefieldController.gameInstance->setOpponentInstance(new Bot());
             //startGameWithBot();
         }
         else if(userInput == "/connect" || userInput == "/connect\n")
         {
             prepareBattlefield();
-            battlefiedController.isGameStarted = true;
+            battlefieldController.gameInstance->gameStarted();
             //establishConnection(); or wait for player to connect (print ip and port in the chat)
+            //battlefieldController.gameInstance->setOpponentInstance(new HumanPlayer());
             //startGameWithPlayer;
         }
         else if(userInput == "/newGameWithTheSamePlayer" || userInput == "/newGameWithTheSamePlayer\n")
         {
             prepareBattlefield();
-            battlefiedController.isGameStarted = true;
+            battlefieldController.gameInstance->gameStarted();
             //startGameWithPlayer;
         }
         else

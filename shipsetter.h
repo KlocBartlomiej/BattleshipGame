@@ -12,7 +12,7 @@ class ShipSetter : public QObject
     Q_OBJECT
 
     QGridLayout* battlefield;
-    std::list<Ship> ships;
+    std::list<Ship> ships; //TODO how to clear this list before next game?
     std::list<std::tuple<int,int>> temporary;
     void clearListAndUiFromLastMove();
 

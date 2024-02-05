@@ -4,6 +4,7 @@
 #include <QGridLayout>
 #include "shipsetter.h"
 #include "myframe.h"
+#include "gamelogic.h"
 
 class BattlefieldController
 {
@@ -11,10 +12,10 @@ class BattlefieldController
     QGridLayout* enemyBattlefield;
 
 public:
-    BattlefieldController(QGridLayout*, QGridLayout*);
+    BattlefieldController(QGridLayout*, QGridLayout*,const bool);
 
     ShipSetter* shipSetter;
-    bool isGameStarted;
+    GameLogic* gameInstance;
     MyFrame* setNew(MyFrame*,bool);
 };
 

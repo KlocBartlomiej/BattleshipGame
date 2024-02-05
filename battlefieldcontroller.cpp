@@ -1,19 +1,17 @@
 #include "battlefieldcontroller.h"
 #include <QDebug>
 
-BattlefieldController::BattlefieldController(QGridLayout * battlefield, QGridLayout * enemyBattlefield)
+BattlefieldController::BattlefieldController(QGridLayout * battlefield, QGridLayout * enemyBattlefield, const bool isGameStarted)
     :battlefield(battlefield)
     , enemyBattlefield(enemyBattlefield)
     , shipSetter(new ShipSetter(battlefield))
-    , isGameStarted(false){}
+    , gameInstance(new GameLogic(isGameStarted)){}
 
 MyFrame* BattlefieldController::setNew(MyFrame* frame,bool isEnemyGround)
 {
     if(isEnemyGround)
     {
-        //TODO: new object for playing, setter will only take care of our battlefield
-        //slot for enemy battlefield can be held by bot or socket class
-        //QObject::connect(frame, &MyFrame::clickedOn, , &::enemyBattlefieldClickOn);
+        QObject::connect(frame, &MyFrame::clickedOn, gameInstance, &GameLogic::enemyBattlefieldClickOn);
     }
     else
     {

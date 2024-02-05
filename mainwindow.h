@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "battlefieldcontroller.h"
+#include "bot.h"
 
 #include <QMainWindow>
 #include <QLabel>
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    BattlefieldController battlefiedController;
+    BattlefieldController battlefieldController;
 
 private slots:
     void on_send_clicked();
