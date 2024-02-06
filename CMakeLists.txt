@@ -33,6 +33,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         gamelogic.h gamelogic.cpp
         opponent.h
         bot.h bot.cpp
+        otherplayer.h otherplayer.cpp
+        connectiontoplayer.h connectiontoplayer.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Game APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -47,7 +47,7 @@ bool MyFrame::isHit(int x, int y, QGridLayout* battlefield)
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
     if(frame->frameStyle() == (QFrame::Box | QFrame::Sunken))
     {
-        qDebug() << "Myframe: " << x << "," <<y << " is a ship";
+        qDebug() << "Myframe: " << x << "," <<y << " is a hit";
         return true;
     }
     return false;

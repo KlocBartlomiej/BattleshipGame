@@ -6,7 +6,7 @@
 
 #include "opponent.h"
 #include "ship.h"
-#include "myframe.h""
+#include "myframe.h"
 
 class GameLogic : public QObject
 {
