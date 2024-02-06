@@ -20,6 +20,7 @@ public:
     static bool isShip(int x, int y,QGridLayout*);
     static void setMiss(int,int,QGridLayout*);
     static void setHit(int,int,QGridLayout*);
+    static bool isHit(int x, int y,QGridLayout*);
 
  signals:
     void clickedOn(int x, int y);

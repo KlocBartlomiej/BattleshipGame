@@ -16,7 +16,7 @@ class ShipSetter : public QObject
     std::list<std::tuple<int,int>> temporary;
     void clearListAndUiFromLastMove();
 
-    bool areShipsSet;
+    bool makeChangesInUI;
     std::list<int> numberOfShipMasts;
 
     int xLastHovered = 0, yLastHovered = 0;
@@ -27,7 +27,7 @@ class ShipSetter : public QObject
     //TODO add function which will check if ship you're trying to set is not touching other ships
 
 public:
-    ShipSetter(QGridLayout*);
+    ShipSetter(QGridLayout*, const bool);
 
     std::list<Ship> getShips();
     void setAllShips();

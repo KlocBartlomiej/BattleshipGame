@@ -119,8 +119,9 @@ void MainWindow::on_send_clicked()
             qDebug() << "/bot option was choosen";
             prepareBattlefield();
             battlefieldController.gameInstance->gameStarted();
-            battlefieldController.gameInstance->setOpponentInstance(new Bot());
-            //startGameWithBot();
+            battlefieldController.gameInstance->setOpponentInstance(
+                new Bot(ui->enemyBattlefield));
+            battlefieldController.gameInstance->startPlaying();
         }
         else if(userInput == "/connect" || userInput == "/connect\n")
         {

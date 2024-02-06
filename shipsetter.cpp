@@ -1,9 +1,9 @@
 #include "shipsetter.h"
 #include <QDebug>
 
-ShipSetter::ShipSetter(QGridLayout * battlefield)
+ShipSetter::ShipSetter(QGridLayout * battlefield, const bool makeChangesInUI)
     :battlefield(battlefield)
-    , areShipsSet(true)
+    , makeChangesInUI(makeChangesInUI)
     , numberOfShipMasts{}{}
 
 void ShipSetter::changeDrawingDirection()
@@ -14,7 +14,6 @@ void ShipSetter::changeDrawingDirection()
 void ShipSetter::setAllShips()
 {
     numberOfShipMasts = {4,3,3,2,2,2,1,1,1,1};
-    areShipsSet = false;
 }
 
 bool ShipSetter::isPlaceCapableOfHoldingShip(const int x, const int y)
@@ -55,7 +54,7 @@ bool ShipSetter::isPlaceNotColidingWithOtherShip(const int x, const int y)
 
 void ShipSetter::battlefieldClickOn(const int x, const int y)
 {
-    if(areShipsSet) { return; }
+    if(numberOfShipMasts.empty()) { return; }
     qDebug() << "battlefield clicked at " << x << " " << y;
 
     if(!temporary.empty())
@@ -73,7 +72,6 @@ void ShipSetter::battlefieldClickOn(const int x, const int y)
 
     if(numberOfShipMasts.empty())
     {
-        areShipsSet = true;
         emit shipsAreSet();
     }
 }
@@ -93,7 +91,7 @@ void ShipSetter::clearListAndUiFromLastMove()
 
 void ShipSetter::battlefieldHoveredOn(const int x, const int y)
 {
-    if(areShipsSet) { return; }
+    if(numberOfShipMasts.empty()) { return; }
     if(xLastHovered == x and yLastHovered == y) { return; }
     qDebug() << "battlefield hovered at " << x << " " << y;
 
@@ -128,6 +126,5 @@ void ShipSetter::battlefieldHoveredOn(const int x, const int y)
 
 std::list<Ship> ShipSetter::getShips()
 {
-    areShipsSet = true;
     return ships;
 }

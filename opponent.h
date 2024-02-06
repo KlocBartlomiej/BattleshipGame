@@ -6,8 +6,10 @@
 class Opponent
 {
 public:
-    virtual void takeShot(int,int) = 0;
+    virtual bool takeShot(int,int) = 0;
     virtual std::tuple<int,int> getShot() = 0;
+    virtual void isMyLastShotHit(const bool) = 0;
+    virtual void isMyLastShotSunken(const bool) = 0;
 };
 
 #endif // OPPONENT_H

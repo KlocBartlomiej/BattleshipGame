@@ -4,7 +4,7 @@
 BattlefieldController::BattlefieldController(QGridLayout * battlefield, QGridLayout * enemyBattlefield, const bool isGameStarted)
     :battlefield(battlefield)
     , enemyBattlefield(enemyBattlefield)
-    , shipSetter(new ShipSetter(battlefield))
+    , shipSetter(new ShipSetter(battlefield,true))
     , gameInstance(new GameLogic(isGameStarted)){}
 
 MyFrame* BattlefieldController::setNew(MyFrame* frame,bool isEnemyGround)
