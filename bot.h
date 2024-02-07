@@ -9,6 +9,7 @@
 
 class Bot : public Opponent
 {
+    bool isBotEnabled;
     QGridLayout* enemyBattlefield;
     ShipSetter* shipSetter;
     std::list<Ship> myShips;
@@ -20,6 +21,8 @@ public:
     std::tuple<int,int> getShot();
     void isMyLastShotHit(const bool);
     void isMyLastShotSunken(const bool);
+    void setPlayerReady(const bool);
+    bool isplayerReady();
 };
 
 #endif // BOT_H

@@ -1,6 +1,7 @@
 #include "otherplayer.h"
 
-otherPlayer::otherPlayer() {}
+otherPlayer::otherPlayer()
+    : isPlayerReady(false){}
 
 bool otherPlayer::takeShot(int,int)
 {
@@ -20,4 +21,14 @@ void otherPlayer::isMyLastShotHit(const bool)
 void otherPlayer::isMyLastShotSunken(const bool)
 {
 
+}
+
+void otherPlayer::setPlayerReady(const bool isBotEnabled)
+{
+    this->isPlayerReady = isBotEnabled;
+}
+
+bool otherPlayer::isplayerReady()
+{
+    return isPlayerReady;
 }

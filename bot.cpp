@@ -3,6 +3,7 @@
 
 Bot::Bot(QGridLayout* enemyBattlefield)
     : enemyBattlefield(enemyBattlefield)
+    , isBotEnabled(false)
     , shipSetter(new ShipSetter(enemyBattlefield,false))
 {
     shipSetter->setAllShips();
@@ -33,11 +34,11 @@ bool Bot::takeShot(const int x, const int y)
     qDebug() << "I'm bot";
     if(MyFrame::isShip(x,y,enemyBattlefield))
     {
-        //TODO make sure this mast was removed from myShips list
+        //TODO make sure this mast was removed from myShips list, or GameLogic should delete it and keep track of sunken ships
         MyFrame::setHit(x,y,enemyBattlefield);
         return true;
     }
-    if(MyFrame::isHit(x,y,enemyBattlefield))
+    if(!MyFrame::isHit(x,y,enemyBattlefield))
     {
         MyFrame::setMiss(x,y,enemyBattlefield);
     }
@@ -46,7 +47,7 @@ bool Bot::takeShot(const int x, const int y)
 
 std::tuple<int,int> Bot::getShot()
 {
-    if(!nextPossibleShots.empty())
+    if(nextPossibleShots.empty())
     {
         while(true)
         {
@@ -74,4 +75,14 @@ void Bot::isMyLastShotHit(const bool isMyLastShotHit)
 void Bot::isMyLastShotSunken(const bool isMyLastShotSunken)
 {
 
+}
+
+void Bot::setPlayerReady(const bool isBotEnabled)
+{
+    this->isBotEnabled = isBotEnabled;
+}
+
+bool Bot::isplayerReady()
+{
+    return isBotEnabled;
 }

@@ -28,6 +28,7 @@ public:
     void setOpponentInstance(Opponent*);
 
 public slots:
+    void playerShipsAreReady();
     void enemyBattlefieldClickOn(const int, const int);
 };
 
