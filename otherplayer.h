@@ -5,15 +5,20 @@
 
 #include <tuple>
 
-class otherPlayer : public Opponent
+class OtherPlayer : public Opponent
 {
     bool isPlayerReady;
 public:
-    otherPlayer();
+    OtherPlayer();
+
+    bool hasOpponentLost();
+
     bool takeShot(int,int);
     std::tuple<int,int> getShot();
-    void isMyLastShotHit(const bool);
-    void isMyLastShotSunken(const bool);
+
+    void hasMyLastShotHit(const bool);
+    void hasMyLastShotSunken(const bool);
+
     void setPlayerReady(const bool);
     bool isplayerReady();
 };

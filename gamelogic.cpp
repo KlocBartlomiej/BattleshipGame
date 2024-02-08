@@ -11,6 +11,12 @@ void GameLogic::setOpponentInstance(Opponent* opponent)
     this->opponent = opponent;
 }
 
+void GameLogic::gameFinished(const QString msg)
+{
+    isGameStarted = false;
+    emit gameEnded(msg);
+}
+
 void GameLogic::gameStarted()
 {
     isGameStarted = true;
@@ -24,38 +30,76 @@ bool GameLogic::hasGameStarted()
 void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
 {
     qDebug() << "clicked " << x << " " << y;
+
     if(!isGameStarted) { return; }
     if(opponent == nullptr) { return; }
     if(!opponent->isplayerReady()) { return; }
+    if(std::find(shotsFired.begin(),shotsFired.end(),std::make_tuple(x,y)) != shotsFired.end())
+    {
+        return;
+    }
+    else
+    {
+        shotsFired.push_back(std::make_tuple(x,y));
+    }
 
     opponent->setPlayerReady(false);
-    opponent->takeShot(x,y);
+    if(opponent->takeShot(x,y)) { enemysSunkenShips++; }
 
     std::tuple<int,int> enemyShot = opponent->getShot();
-    bool isHit = false, isSunken = false;
-    for(auto ship : ships)
+    bool isOpponentsLastShotHit = false, isOpponentsLastShotSunken = false;
+    auto ship = std::begin(ships);
+    while(ship != std::end(ships))
     {
-        if(ship.searchAndRemove(enemyShot))
+        if(ship->searchAndRemove(enemyShot))
         {
-            isHit = true;
-            if(ship.isShipSunken())
+            qDebug() << "set hit for " << std::get<0>(enemyShot) << " " << std::get<1>(enemyShot);
+            isOpponentsLastShotHit = true;
+            MyFrame::setHit(std::get<0>(enemyShot),std::get<1>(enemyShot),playerBattlefield);
+            if(ship->isShipSunken())
             {
-                isSunken = true;
-                //TODO remove ship from ships list, at this point app should check if somebody won already
+                isOpponentsLastShotSunken = true;
+                playersSunkenShips++;
+                ships.erase(ship);
             }
+            break;
         }
+        ship++;
     }
-    opponent->isMyLastShotHit(isHit);
-    opponent->isMyLastShotSunken(isSunken);
+
+    if(!isOpponentsLastShotHit)
+    {
+        qDebug() << "set miss for " << std::get<0>(enemyShot) << " " << std::get<1>(enemyShot);
+        MyFrame::setMiss(std::get<0>(enemyShot),std::get<1>(enemyShot),playerBattlefield);
+    }
+
+    opponent->hasMyLastShotHit(isOpponentsLastShotHit);
+    opponent->hasMyLastShotSunken(isOpponentsLastShotSunken);
+
+    int classicGameNumberOfShips = 10;
+    if(enemysSunkenShips == classicGameNumberOfShips)
+    {
+        return gameFinished("Congratulations :D");
+    }
+
+    if(playersSunkenShips == classicGameNumberOfShips)
+    {
+        return gameFinished("You've been defeated");
+    }
+
     opponent->setPlayerReady(true);
 }
 
 void GameLogic::startPlaying()
 {
-    //TODO init some variables which will be used to determine end of the game
+    shotsFired.clear();
+    gameStarted();
+    playersSunkenShips = 0;
+    enemysSunkenShips = 0;
 }
 
-void GameLogic::playerShipsAreReady()
+void GameLogic::playerShipsAreReady(std::list<Ship> ships)
 {
+    this->ships = ships;
     opponent->setPlayerReady(true);
 }

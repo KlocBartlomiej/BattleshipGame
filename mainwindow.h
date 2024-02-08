@@ -25,6 +25,8 @@ private slots:
     void on_send_clicked();
     void on_input_cursorPositionChanged();
 
+    void gameEnded(const QString);
+
 private:
     Ui::MainWindow *ui;
 

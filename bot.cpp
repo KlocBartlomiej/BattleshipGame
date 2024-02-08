@@ -10,39 +10,52 @@ Bot::Bot(QGridLayout* enemyBattlefield)
     int x,y;
     int classicGameShipsNumber = 10;
 
-    while(myShips.size() != classicGameShipsNumber)
+    while(botsShips.size() != classicGameShipsNumber)
     {
-        x = QRandomGenerator::global()->bounded(1, 10) + 1;
-        y = QRandomGenerator::global()->bounded(1, 10) + 1;
+        x = QRandomGenerator::global()->bounded(0, 10) + 1;
+        y = QRandomGenerator::global()->bounded(0, 10) + 1;
 
         if((x+y)%2)
         {
             shipSetter->changeDrawingDirection();
         }
-        qDebug() << x << " " << y;
 
         QMetaObject::invokeMethod(shipSetter,"battlefieldHoveredOn",Q_ARG(int,x),Q_ARG(int,y));
         QMetaObject::invokeMethod(shipSetter,"battlefieldClickOn",Q_ARG(int,x),Q_ARG(int,y));
 
-        myShips = shipSetter->getShips();
-        qDebug() << "ship count " << myShips.size();
+        botsShips = shipSetter->getShips();
     }
 }
 
 bool Bot::takeShot(const int x, const int y)
 {
-    qDebug() << "I'm bot";
+    bool isSunken = false;
     if(MyFrame::isShip(x,y,enemyBattlefield))
     {
-        //TODO make sure this mast was removed from myShips list, or GameLogic should delete it and keep track of sunken ships
+        auto ship = std::begin(botsShips);
+        while(ship != std::end(botsShips))
+        {
+            if(ship->searchAndRemove(std::make_tuple(x,y)))
+            {
+                if(ship->isShipSunken())
+                {
+                    botsShips.erase(ship);
+                    isSunken = true;
+                }
+                break;
+            }
+            else
+            {
+                ship++;
+            }
+        }
         MyFrame::setHit(x,y,enemyBattlefield);
-        return true;
     }
     if(!MyFrame::isHit(x,y,enemyBattlefield))
     {
         MyFrame::setMiss(x,y,enemyBattlefield);
     }
-    return false;
+    return isSunken;
 }
 
 std::tuple<int,int> Bot::getShot()
@@ -52,12 +65,13 @@ std::tuple<int,int> Bot::getShot()
         while(true)
         {
             std::tuple<int,int> shipMast = std::make_tuple(
-                QRandomGenerator::global()->bounded(1, 10) + 1,
-                QRandomGenerator::global()->bounded(1, 10) + 1);
+                QRandomGenerator::global()->bounded(0, 10) + 1,
+                QRandomGenerator::global()->bounded(0, 10) + 1);
             auto it = std::find(shotsFired.begin(), shotsFired.end(), shipMast);
             if(it == shotsFired.end())
             {
                 shotsFired.push_back(shipMast);
+                qDebug() << "next bot's shot: " << std::get<0>(shipMast) << " " << std::get<1>(shipMast);
                 return shipMast;
             }
         }
@@ -67,14 +81,17 @@ std::tuple<int,int> Bot::getShot()
     return nextShot;
 }
 
-void Bot::isMyLastShotHit(const bool isMyLastShotHit)
+void Bot::hasMyLastShotHit(const bool hasMyLastShotHit)
 {
-
+    if(hasMyLastShotHit)
+    {
+        //TODO when ships can't be touching ready, then I can predict which direction bot should shoot next to sunk the ship
+    }
 }
 
-void Bot::isMyLastShotSunken(const bool isMyLastShotSunken)
+void Bot::hasMyLastShotSunken(const bool hasMyLastShotSunken)
 {
-
+    if(hasMyLastShotSunken) { nextPossibleShots.clear(); }
 }
 
 void Bot::setPlayerReady(const bool isBotEnabled)
@@ -85,4 +102,9 @@ void Bot::setPlayerReady(const bool isBotEnabled)
 bool Bot::isplayerReady()
 {
     return isBotEnabled;
+}
+
+bool Bot::hasOpponentLost()
+{
+    return botsShips.size() == 0;
 }

@@ -72,7 +72,7 @@ void ShipSetter::battlefieldClickOn(const int x, const int y)
 
     if(numberOfShipMasts.empty())
     {
-        emit shipsAreSet();
+        emit shipsAreSet(getShips());
     }
 }
 
@@ -127,4 +127,9 @@ void ShipSetter::battlefieldHoveredOn(const int x, const int y)
 std::list<Ship> ShipSetter::getShips()
 {
     return ships;
+}
+
+void ShipSetter::clearShips()
+{
+    ships.clear();
 }

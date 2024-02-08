@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     battlefieldController = BattlefieldController(ui->battlefield, ui->enemyBattlefield,false);
 
+    QObject::connect(battlefieldController.gameInstance, &GameLogic::gameEnded, this, &MainWindow::gameEnded);
+
     char fieldXContent = 'A';
     QLabel* xIndicator;
     int iIndex = 0;
@@ -58,7 +60,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::clearBattlefields()
 {
-    //TODO clear list of ships for backend when clearing UI
+    battlefieldController.shipSetter->clearShips();
     for(int i = 1; i < 11; i++)
     {
         for(int j = 1; j < 11; j++)
@@ -88,17 +90,25 @@ QLabel* MainWindow::getLabelFromInt(int i)
 void MainWindow::prepareBattlefield()
 {
     clearBattlefields();
+    battlefieldController.gameInstance->startPlaying();
     ui->chat->clear();
     ui->chat->append("Please place your ships. Keep in mind you can \"/rotate\" them.");
     battlefieldController.shipSetter->setAllShips();
+}
+
+void MainWindow::gameEnded(const QString msg)
+{
+    ui->chat->clear();
+    ui->chat->append(msg);
+    printHelp();
 }
 
 void MainWindow::printHelp()
 {
     ui->chat->append("You can choose:\
         \ntype \"/bot\" to start new game agains the computer\
-        \ntype \"/connect\" to start a game agains player which will connect to you\
-        \ntype \"/newGameWithTheSamePlayer\" to start another game with the same player without connecting\
+        \nTODO - type \"/connect\" to start a game agains player which will connect to you\
+        \nTODO - type \"/newGameWithTheSamePlayer\" to start another game with the same player without connecting\
         \ntype \"/rotate\" to change ship orientation\
     ");
 }
@@ -118,23 +128,18 @@ void MainWindow::on_send_clicked()
         {
             qDebug() << "/bot option was choosen";
             prepareBattlefield();
-            battlefieldController.gameInstance->gameStarted();
             battlefieldController.gameInstance->setOpponentInstance(
                 new Bot(ui->enemyBattlefield));
-            battlefieldController.gameInstance->startPlaying();
         }
         else if(userInput == "/connect" || userInput == "/connect\n")
         {
             prepareBattlefield();
-            battlefieldController.gameInstance->gameStarted();
-            //establishConnection(); or wait for player to connect (print ip and port in the chat)
-            //battlefieldController.gameInstance->setOpponentInstance(new HumanPlayer());
-            //startGameWithPlayer;
+            // TODO establishConnection(); or wait for player to connect (print ip and port in the chat)
+            //battlefieldController.gameInstance->setOpponentInstance(new OtherPlayer());
         }
         else if(userInput == "/newGameWithTheSamePlayer" || userInput == "/newGameWithTheSamePlayer\n")
         {
             prepareBattlefield();
-            battlefieldController.gameInstance->gameStarted();
             //startGameWithPlayer;
         }
         else

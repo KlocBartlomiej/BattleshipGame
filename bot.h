@@ -10,17 +10,24 @@
 class Bot : public Opponent
 {
     bool isBotEnabled;
+
     QGridLayout* enemyBattlefield;
     ShipSetter* shipSetter;
-    std::list<Ship> myShips;
+
+    std::list<Ship> botsShips;
     std::list<std::tuple<int,int>> nextPossibleShots;
     std::list<std::tuple<int,int>> shotsFired;
 public:
     Bot(QGridLayout*);
+
+    bool hasOpponentLost();
+
     bool takeShot(const int, const int);
     std::tuple<int,int> getShot();
-    void isMyLastShotHit(const bool);
-    void isMyLastShotSunken(const bool);
+
+    void hasMyLastShotHit(const bool);
+    void hasMyLastShotSunken(const bool);
+
     void setPlayerReady(const bool);
     bool isplayerReady();
 };

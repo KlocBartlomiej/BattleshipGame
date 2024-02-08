@@ -30,6 +30,8 @@ public:
     ShipSetter(QGridLayout*, const bool);
 
     std::list<Ship> getShips();
+    void clearShips();
+
     void setAllShips();
     void changeDrawingDirection();
 
@@ -38,7 +40,7 @@ public slots:
     void battlefieldHoveredOn(const int, const int);
 
 signals:
-    void shipsAreSet();
+    void shipsAreSet(std::list<Ship>);
 };
 
 #endif // SHIPSETTER_H

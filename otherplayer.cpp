@@ -1,34 +1,42 @@
 #include "otherplayer.h"
 
-otherPlayer::otherPlayer()
+OtherPlayer::OtherPlayer()
     : isPlayerReady(false){}
 
-bool otherPlayer::takeShot(int,int)
+bool OtherPlayer::takeShot(int,int)
 {
-    return false;
+    auto placeHolder = false;
+    return placeHolder;
 }
 
-std::tuple<int,int> otherPlayer::getShot()
+std::tuple<int,int> OtherPlayer::getShot()
 {
-    return std::make_tuple(1,1);
+    auto placeHolder = std::make_tuple(1,1);
+    return placeHolder;
 }
 
-void otherPlayer::isMyLastShotHit(const bool)
-{
-
-}
-
-void otherPlayer::isMyLastShotSunken(const bool)
+void OtherPlayer::hasMyLastShotHit(const bool hasMyLastShotHit)
 {
 
 }
 
-void otherPlayer::setPlayerReady(const bool isBotEnabled)
+void OtherPlayer::hasMyLastShotSunken(const bool hasMyLastShotSunken)
+{
+
+}
+
+void OtherPlayer::setPlayerReady(const bool isBotEnabled)
 {
     this->isPlayerReady = isBotEnabled;
 }
 
-bool otherPlayer::isplayerReady()
+bool OtherPlayer::isplayerReady()
 {
     return isPlayerReady;
+}
+
+bool OtherPlayer::hasOpponentLost()
+{
+    auto placeHolder = false;
+    return placeHolder;
 }
