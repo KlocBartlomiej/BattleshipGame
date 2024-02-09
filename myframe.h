@@ -8,21 +8,24 @@ class MyFrame : public QFrame{
     Q_OBJECT
     int x,y;
     bool isShipHidden;
+    bool isShipNeighbour;
 public:
-    MyFrame(int x, int y): x(x), y(y), isShipHidden(false){ this->setMouseTracking(true);}
+    MyFrame(int x, int y): x(x), y(y), isShipHidden(false), isShipNeighbour(false){ this->setMouseTracking(true);}
     int getX(){ return x; }
     int getY(){ return y; }
     void mousePressEvent(QMouseEvent* event){ emit clickedOn(x,y);}
     void mouseMoveEvent(QMouseEvent* event){ emit hoveredOn(x,y);}
 
     void setNew();
-    static void setHiddenShip(int,int,QGridLayout*,bool);
-    static void setEmpty(int,int,QGridLayout*);
-    static void setShip(int,int,QGridLayout*);
-    static bool isShip(int x, int y,QGridLayout*);
-    static void setMiss(int,int,QGridLayout*);
-    static void setHit(int,int,QGridLayout*);
-    static bool isHit(int x, int y,QGridLayout*);
+    static void setHiddenShip(const int,const int,const QGridLayout*);
+    static void setShipNeighbour(const int,const int,const QGridLayout*);
+    static bool isNeighbourFrame(const int,const int,const QGridLayout*);
+    static void setEmpty(const int,const int,const QGridLayout*);
+    static void setShip(const int,const int,const QGridLayout*);
+    static bool isShip(const int,const int,const QGridLayout*);
+    static void setMiss(const int,const int,const QGridLayout*);
+    static void setHit(const int,const int,const QGridLayout*);
+    static bool isHit(const int,const int,const QGridLayout*);
 
  signals:
     void clickedOn(int x, int y);

@@ -28,7 +28,6 @@ bool ShipSetter::isPlaceCapableOfHoldingShip(const int x, const int y)
 
 bool ShipSetter::isPlaceNotColidingWithOtherShip(const int x, const int y)
 {
-    //TODO maybe it's possible to avoid using if(drawingDirection)
     if(xDrawingDirection)
     {
         for(int i=x; i<numberOfShipMasts.front()+x; i++)
@@ -52,6 +51,31 @@ bool ShipSetter::isPlaceNotColidingWithOtherShip(const int x, const int y)
     return true;
 }
 
+bool ShipSetter::isPlaceNotNeighbourToOtherShip(const int x, const int y)
+{
+    if(xDrawingDirection)
+    {
+        for(int i=x; i<numberOfShipMasts.front()+x; i++)
+        {
+            if(MyFrame::isNeighbourFrame(i,y,battlefield))
+            {
+                return false;
+            }
+        }
+    }
+    else
+    {
+        for(int i=y; i<numberOfShipMasts.front()+y; i++)
+        {
+            if(MyFrame::isNeighbourFrame(x,i,battlefield))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void ShipSetter::battlefieldClickOn(const int x, const int y)
 {
     if(numberOfShipMasts.empty()) { return; }
@@ -60,12 +84,7 @@ void ShipSetter::battlefieldClickOn(const int x, const int y)
     if(!temporary.empty())
     {
         numberOfShipMasts.pop_front();
-        Ship ship = Ship();
-
-        for(std::tuple<int,int> mast : temporary)
-        {
-            ship.addShipMast(mast);
-        }
+        Ship ship = Ship(temporary, battlefield);
         ships.push_back(ship);
         temporary.clear();
     }
@@ -100,7 +119,9 @@ void ShipSetter::battlefieldHoveredOn(const int x, const int y)
 
     if(!temporary.empty()) { clearListAndUiFromLastMove(); }
 
-    if(isPlaceCapableOfHoldingShip(x,y) and isPlaceNotColidingWithOtherShip(x,y))
+    if(isPlaceCapableOfHoldingShip(x,y)
+        and isPlaceNotColidingWithOtherShip(x,y)
+        and isPlaceNotNeighbourToOtherShip(x,y))
     {
         if(xDrawingDirection)
         {
@@ -132,7 +153,7 @@ void ShipSetter::setShip(int x, int y, QGridLayout* battlefield)
     }
     else
     {
-        MyFrame::setHiddenShip(x,y,battlefield,true);
+        MyFrame::setHiddenShip(x,y,battlefield);
     }
 }
 

@@ -5,15 +5,20 @@
 #include <tuple>
 #include <algorithm>
 
+#include <QGridLayout>
+
 class Ship
 {
     std::list<std::tuple<int,int>> ship;
+    std::list<std::tuple<int,int>> neighbours;
+    void pupulateNeighbourList();
+    void removeDuplicatedFromTheList();
+    void setNeighboursNotAwailableForShips(const QGridLayout*);
 public:
-    Ship();
+    Ship(const std::list<std::tuple<int,int>>,const QGridLayout*);
     void addShipMast(const std::tuple<int,int>);
     bool searchAndRemove(const std::tuple<int,int>);
     bool isShipSunken();
-    //TODO add function which will exclude all neighbors for bot to aim for
 };
 
 #endif // SHIP_H

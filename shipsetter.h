@@ -12,7 +12,7 @@ class ShipSetter : public QObject
     Q_OBJECT
 
     QGridLayout* battlefield;
-    std::list<Ship> ships; //TODO how to clear this list before next game?
+    std::list<Ship> ships;
     std::list<std::tuple<int,int>> temporary;
     void clearListAndUiFromLastMove();
 
@@ -26,7 +26,7 @@ class ShipSetter : public QObject
 
     bool isPlaceCapableOfHoldingShip(const int, const int);
     bool isPlaceNotColidingWithOtherShip(const int, const int);
-    //TODO add function which will check if ship you're trying to set is not touching other ships
+    bool isPlaceNotNeighbourToOtherShip(const int, const int);
 
 public:
     ShipSetter(QGridLayout*, const bool);
