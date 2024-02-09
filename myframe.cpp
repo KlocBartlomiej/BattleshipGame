@@ -7,6 +7,12 @@ void MyFrame::setNew()
     this->setFrameStyle(QFrame::Panel | QFrame::Raised);
 }
 
+void MyFrame::setHiddenShip(int x, int y, QGridLayout* battlefield, bool hide)
+{
+    MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
+    frame->isShipHidden = hide;
+}
+
 void MyFrame::setEmpty(int x, int y, QGridLayout* battlefield)
 {
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
@@ -22,7 +28,7 @@ void MyFrame::setShip(int x, int y, QGridLayout* battlefield)
 bool MyFrame::isShip(int x, int y, QGridLayout* battlefield)
 {
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
-    if(frame->frameStyle() == (QFrame::Box | QFrame::Raised))
+    if(frame->isShipHidden || frame->frameStyle() == (QFrame::Box | QFrame::Raised))
     {
         qDebug() << "Myframe: " << x << "," <<y << " is a ship";
         return true;

@@ -7,14 +7,16 @@
 class MyFrame : public QFrame{
     Q_OBJECT
     int x,y;
+    bool isShipHidden;
 public:
-    MyFrame(int x, int y): x(x), y(y){ this->setMouseTracking(true);}
+    MyFrame(int x, int y): x(x), y(y), isShipHidden(false){ this->setMouseTracking(true);}
     int getX(){ return x; }
     int getY(){ return y; }
     void mousePressEvent(QMouseEvent* event){ emit clickedOn(x,y);}
     void mouseMoveEvent(QMouseEvent* event){ emit hoveredOn(x,y);}
 
     void setNew();
+    static void setHiddenShip(int,int,QGridLayout*,bool);
     static void setEmpty(int,int,QGridLayout*);
     static void setShip(int,int,QGridLayout*);
     static bool isShip(int x, int y,QGridLayout*);

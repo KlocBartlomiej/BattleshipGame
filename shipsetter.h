@@ -16,6 +16,8 @@ class ShipSetter : public QObject
     std::list<std::tuple<int,int>> temporary;
     void clearListAndUiFromLastMove();
 
+    void setShip(int,int,QGridLayout*);
+
     bool makeChangesInUI;
     std::list<int> numberOfShipMasts;
 

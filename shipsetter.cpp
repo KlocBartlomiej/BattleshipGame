@@ -108,7 +108,7 @@ void ShipSetter::battlefieldHoveredOn(const int x, const int y)
             {
                 qDebug() << "     i = " << i << ", y = " << y;
                 temporary.push_back(std::make_tuple(i,y));
-                MyFrame::setShip(i,y,battlefield);
+                setShip(i,y,battlefield);
             }
         }
         else
@@ -117,11 +117,23 @@ void ShipSetter::battlefieldHoveredOn(const int x, const int y)
             {
                 qDebug() << "     x = " << x << ", i = " << i;
                 temporary.push_back(std::make_tuple(x,i));
-                MyFrame::setShip(x,i,battlefield);
+                setShip(x,i,battlefield);
             }
         }
     }
     qDebug() << "temporary size: " << temporary.size();
+}
+
+void ShipSetter::setShip(int x, int y, QGridLayout* battlefield)
+{
+    if(makeChangesInUI)
+    {
+        MyFrame::setShip(x,y,battlefield);
+    }
+    else
+    {
+        MyFrame::setHiddenShip(x,y,battlefield,true);
+    }
 }
 
 std::list<Ship> ShipSetter::getShips()

@@ -65,6 +65,7 @@ void MainWindow::clearBattlefields()
     {
         for(int j = 1; j < 11; j++)
         {
+            MyFrame::setHiddenShip(i,j,ui->enemyBattlefield,false);
             MyFrame::setEmpty(i,j,ui->battlefield);
             MyFrame::setEmpty(i,j,ui->enemyBattlefield);
         }
