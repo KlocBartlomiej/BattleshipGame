@@ -19,6 +19,7 @@ public:
     void addShipMast(const std::tuple<int,int>);
     bool searchAndRemove(const std::tuple<int,int>);
     bool isShipSunken();
+    std::list<std::tuple<int,int>> getNeighbours();
 };
 
 #endif // SHIP_H

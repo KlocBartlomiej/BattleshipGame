@@ -22,11 +22,11 @@ public:
 
     bool hasOpponentLost();
 
-    bool takeShot(const int, const int);
+    std::optional<std::list<std::tuple<int,int>>> takeShot(const int, const int);
     std::tuple<int,int> getShot();
 
     void hasMyLastShotHit(const bool);
-    void hasMyLastShotSunken(const bool);
+    void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>);
 
     void setPlayerReady(const bool);
     bool isplayerReady();

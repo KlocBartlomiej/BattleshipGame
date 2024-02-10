@@ -27,9 +27,9 @@ Bot::Bot(QGridLayout* enemyBattlefield)
     }
 }
 
-bool Bot::takeShot(const int x, const int y)
+std::optional<std::list<std::tuple<int,int>>> Bot::takeShot(const int x, const int y)
 {
-    bool isSunken = false;
+    std::optional<std::list<std::tuple<int,int>>> neighboursOfSunkenShip = std::nullopt;
     if(MyFrame::isShip(x,y,enemyBattlefield))
     {
         auto ship = std::begin(botsShips);
@@ -39,8 +39,8 @@ bool Bot::takeShot(const int x, const int y)
             {
                 if(ship->isShipSunken())
                 {
+                    neighboursOfSunkenShip.emplace(ship->getNeighbours());
                     botsShips.erase(ship);
-                    isSunken = true;
                 }
                 break;
             }
@@ -55,7 +55,7 @@ bool Bot::takeShot(const int x, const int y)
     {
         MyFrame::setMiss(x,y,enemyBattlefield);
     }
-    return isSunken;
+    return neighboursOfSunkenShip;
 }
 
 std::tuple<int,int> Bot::getShot()
@@ -89,9 +89,16 @@ void Bot::hasMyLastShotHit(const bool hasMyLastShotHit)
     }
 }
 
-void Bot::hasMyLastShotSunken(const bool hasMyLastShotSunken)
+void Bot::hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>> neighboursOfSunkenShip)
 {
-    if(hasMyLastShotSunken) { nextPossibleShots.clear(); }
+    if(neighboursOfSunkenShip)
+    {
+        for(auto neighbour : *neighboursOfSunkenShip)
+        {
+            shotsFired.push_back(neighbour);
+        }
+        nextPossibleShots.clear();
+    }
 }
 
 void Bot::setPlayerReady(const bool isBotEnabled)

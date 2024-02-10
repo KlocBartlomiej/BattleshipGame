@@ -3,10 +3,9 @@
 OtherPlayer::OtherPlayer()
     : isPlayerReady(false){}
 
-bool OtherPlayer::takeShot(int,int)
+std::optional<std::list<std::tuple<int,int>>> OtherPlayer::takeShot(int,int)
 {
-    auto placeHolder = false;
-    return placeHolder;
+    return std::nullopt;
 }
 
 std::tuple<int,int> OtherPlayer::getShot()
@@ -20,7 +19,7 @@ void OtherPlayer::hasMyLastShotHit(const bool hasMyLastShotHit)
 
 }
 
-void OtherPlayer::hasMyLastShotSunken(const bool hasMyLastShotSunken)
+void OtherPlayer::hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>> neighboursOfSunkenShip)
 {
 
 }

@@ -15,6 +15,7 @@ class GameLogic : public QObject
     int playersSunkenShips;
     int enemysSunkenShips;
     QGridLayout* playerBattlefield;
+    QGridLayout* enemyBattlefield;
     std::list<Ship> ships;
     std::list<std::tuple<int,int>> shotsFired;
     Opponent* opponent;
@@ -23,7 +24,7 @@ class GameLogic : public QObject
     void gameFinished(const QString);
 
 public:
-    GameLogic(QGridLayout*, const bool);
+    GameLogic(QGridLayout*,QGridLayout*,const bool);
 
     void gameStarted();
     bool hasGameStarted();
@@ -32,7 +33,7 @@ public:
     void setOpponentInstance(Opponent*);
 
     void hasMyLastShotHit(const bool);
-    void hasMyLastShotSunken(const bool);
+    void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>);
 
 public slots:
     void playerShipsAreReady(std::list<Ship>);

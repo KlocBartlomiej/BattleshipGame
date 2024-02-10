@@ -13,11 +13,11 @@ public:
 
     bool hasOpponentLost();
 
-    bool takeShot(int,int);
+    std::optional<std::list<std::tuple<int,int>>> takeShot(int,int);
     std::tuple<int,int> getShot();
 
     void hasMyLastShotHit(const bool);
-    void hasMyLastShotSunken(const bool);
+    void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>);
 
     void setPlayerReady(const bool);
     bool isplayerReady();

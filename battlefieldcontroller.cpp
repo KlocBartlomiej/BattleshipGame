@@ -5,7 +5,7 @@ BattlefieldController::BattlefieldController(QGridLayout* battlefield, QGridLayo
     :battlefield(battlefield)
     , enemyBattlefield(enemyBattlefield)
     , shipSetter(new ShipSetter(battlefield,true))
-    , gameInstance(new GameLogic(battlefield,isGameStarted))
+    , gameInstance(new GameLogic(battlefield,enemyBattlefield,isGameStarted))
 {
     QObject::connect(shipSetter, &ShipSetter::shipsAreSet, gameInstance, &GameLogic::playerShipsAreReady);
 }

@@ -1,8 +1,9 @@
 #include "gamelogic.h"
 #include <QDebug>
 
-GameLogic::GameLogic(QGridLayout * battlefield, const bool isGameStarted)
+GameLogic::GameLogic(QGridLayout* battlefield,QGridLayout* enemyBattlefield, const bool isGameStarted)
     : playerBattlefield(battlefield)
+    , enemyBattlefield(enemyBattlefield)
     , isGameStarted(isGameStarted)
     , opponent(nullptr){}
 
@@ -44,7 +45,17 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
     }
 
     opponent->setPlayerReady(false);
-    if(opponent->takeShot(x,y)) { enemysSunkenShips++; }
+    if(auto neighbours = opponent->takeShot(x,y))
+    {
+        for(auto neighbour : *neighbours)
+        {
+            shotsFired.push_back(neighbour);
+            MyFrame::setMiss(std::get<0>(neighbour),std::get<1>(neighbour),enemyBattlefield);
+        }
+        enemysSunkenShips++;
+    }
+
+    std::optional<std::list<std::tuple<int,int>>> neighboursOfSunkenShip = std::nullopt;
 
     std::tuple<int,int> enemyShot = opponent->getShot();
     bool isOpponentsLastShotHit = false, isOpponentsLastShotSunken = false;
@@ -59,6 +70,7 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
             if(ship->isShipSunken())
             {
                 isOpponentsLastShotSunken = true;
+                neighboursOfSunkenShip.emplace(ship->getNeighbours());
                 playersSunkenShips++;
                 ships.erase(ship);
             }
@@ -74,7 +86,15 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
     }
 
     opponent->hasMyLastShotHit(isOpponentsLastShotHit);
-    opponent->hasMyLastShotSunken(isOpponentsLastShotSunken);
+    opponent->hasMyLastShotSunken(isOpponentsLastShotSunken ? neighboursOfSunkenShip : std::nullopt);
+
+    if(isOpponentsLastShotSunken)
+    {
+        for(auto neighbour : *neighboursOfSunkenShip)
+        {
+            MyFrame::setMiss(std::get<0>(neighbour),std::get<1>(neighbour),playerBattlefield);
+        }
+    }
 
     int classicGameNumberOfShips = 10;
     if(enemysSunkenShips == classicGameNumberOfShips)

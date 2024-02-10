@@ -88,3 +88,8 @@ void Ship::setNeighboursNotAwailableForShips(const QGridLayout* battlefield)
         MyFrame::setShipNeighbour(x,y,battlefield);
     }
 }
+
+std::list<std::tuple<int,int>> Ship::getNeighbours()
+{
+    return neighbours;
+}
