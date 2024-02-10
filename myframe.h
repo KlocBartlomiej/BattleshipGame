@@ -24,6 +24,7 @@ public:
     static void setShip(const int,const int,const QGridLayout*);
     static bool isShip(const int,const int,const QGridLayout*);
     static void setMiss(const int,const int,const QGridLayout*);
+    static bool isMiss(const int,const int,const QGridLayout*);
     static void setHit(const int,const int,const QGridLayout*);
     static bool isHit(const int,const int,const QGridLayout*);
 

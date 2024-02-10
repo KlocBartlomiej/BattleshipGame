@@ -30,8 +30,6 @@ bool GameLogic::hasGameStarted()
 
 void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
 {
-    qDebug() << "clicked " << x << " " << y;
-
     if(!isGameStarted) { return; }
     if(opponent == nullptr) { return; }
     if(!opponent->isplayerReady()) { return; }
@@ -55,7 +53,7 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
         enemysSunkenShips++;
     }
 
-    std::optional<std::list<std::tuple<int,int>>> neighboursOfSunkenShip = std::nullopt;
+    std::optional<mastList> neighboursOfSunkenShip = std::nullopt;
 
     std::tuple<int,int> enemyShot = opponent->getShot();
     bool isOpponentsLastShotHit = false, isOpponentsLastShotSunken = false;
@@ -64,7 +62,6 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
     {
         if(ship->searchAndRemove(enemyShot))
         {
-            qDebug() << "set hit for " << std::get<0>(enemyShot) << " " << std::get<1>(enemyShot);
             isOpponentsLastShotHit = true;
             MyFrame::setHit(std::get<0>(enemyShot),std::get<1>(enemyShot),playerBattlefield);
             if(ship->isShipSunken())
@@ -81,7 +78,6 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
 
     if(!isOpponentsLastShotHit)
     {
-        qDebug() << "set miss for " << std::get<0>(enemyShot) << " " << std::get<1>(enemyShot);
         MyFrame::setMiss(std::get<0>(enemyShot),std::get<1>(enemyShot),playerBattlefield);
     }
 

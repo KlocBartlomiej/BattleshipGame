@@ -6,6 +6,9 @@
 
 #include <list>
 #include <QRandomGenerator>
+#include <algorithm>
+
+using mastList = std::list<std::tuple<int,int>>;
 
 class Bot : public Opponent
 {
@@ -15,18 +18,21 @@ class Bot : public Opponent
     ShipSetter* shipSetter;
 
     std::list<Ship> botsShips;
-    std::list<std::tuple<int,int>> nextPossibleShots;
-    std::list<std::tuple<int,int>> shotsFired;
+    mastList nextPossibleShots;
+    mastList shotsWhichHit;
+    mastList shotsFired;
+    void populateNextShotsList(int,int);
+    bool whichWayBotShouldAim(mastList);
 public:
     Bot(QGridLayout*);
 
     bool hasOpponentLost();
 
-    std::optional<std::list<std::tuple<int,int>>> takeShot(const int, const int);
+    std::optional<mastList> takeShot(const int, const int);
     std::tuple<int,int> getShot();
 
     void hasMyLastShotHit(const bool);
-    void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>);
+    void hasMyLastShotSunken(std::optional<mastList>);
 
     void setPlayerReady(const bool);
     bool isplayerReady();

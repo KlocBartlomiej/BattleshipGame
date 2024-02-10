@@ -45,21 +45,30 @@ bool MyFrame::isShip(const int x,const int y,const QGridLayout* battlefield)
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
     if(frame->isShipHidden || frame->frameStyle() == (QFrame::Box | QFrame::Raised))
     {
-        qDebug() << "Myframe: " << x << "," <<y << " is a ship";
         return true;
     }
     return false;
 }
 
-void MyFrame::setMiss(const int x,const int y, const QGridLayout* enemyBattlefield)
+void MyFrame::setMiss(const int x,const int y, const QGridLayout* battlefield)
 {
-    MyFrame* frame = qobject_cast<MyFrame*>(enemyBattlefield->itemAtPosition(x,y)->widget());
+    MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
     frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 }
 
-void MyFrame::setHit(const int x,const int y,const QGridLayout* enemyBattlefield)
+bool MyFrame::isMiss(const int x,const int y,const QGridLayout* battlefield)
 {
-    MyFrame* frame = qobject_cast<MyFrame*>(enemyBattlefield->itemAtPosition(x,y)->widget());
+    MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
+    if(frame->frameStyle() == (QFrame::Box | QFrame::Plain))
+    {
+        return true;
+    }
+    return false;
+}
+
+void MyFrame::setHit(const int x,const int y,const QGridLayout* battlefield)
+{
+    MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
     frame->setFrameStyle(QFrame::Box | QFrame::Sunken);
 }
 
@@ -68,7 +77,6 @@ bool MyFrame::isHit(const int x,const int y,const QGridLayout* battlefield)
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
     if(frame->frameStyle() == (QFrame::Box | QFrame::Sunken))
     {
-        qDebug() << "Myframe: " << x << "," <<y << " is a hit";
         return true;
     }
     return false;

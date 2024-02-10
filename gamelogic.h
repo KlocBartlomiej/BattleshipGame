@@ -11,13 +11,13 @@
 class GameLogic : public QObject
 {
     Q_OBJECT
-
+    using mastList = std::list<std::tuple<int,int>>;
     int playersSunkenShips;
     int enemysSunkenShips;
     QGridLayout* playerBattlefield;
     QGridLayout* enemyBattlefield;
     std::list<Ship> ships;
-    std::list<std::tuple<int,int>> shotsFired;
+    mastList shotsFired;
     Opponent* opponent;
 
     bool isGameStarted;
@@ -33,7 +33,7 @@ public:
     void setOpponentInstance(Opponent*);
 
     void hasMyLastShotHit(const bool);
-    void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>);
+    void hasMyLastShotSunken(std::optional<mastList>);
 
 public slots:
     void playerShipsAreReady(std::list<Ship>);
