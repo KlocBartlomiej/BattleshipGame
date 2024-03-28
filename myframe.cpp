@@ -4,6 +4,7 @@ void MyFrame::setNew()
 {
     this->setLineWidth(3);
     this->setMidLineWidth(3);
+    this->setStyleSheet("background-color: rgb(150,150,150)");
     this->setFrameStyle(QFrame::Panel | QFrame::Raised);
 }
 
@@ -29,6 +30,7 @@ bool MyFrame::isNeighbourFrame(const int x,const int y,const QGridLayout* battle
 void MyFrame::setEmpty(const int x,const int y,const QGridLayout* battlefield)
 {
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
+    frame->setStyleSheet("background-color: rgb(150,150,150)");
     frame->setFrameStyle(QFrame::Panel | QFrame::Raised);
     frame->isShipHidden = false;
     frame->isShipNeighbour = false;
@@ -37,6 +39,7 @@ void MyFrame::setEmpty(const int x,const int y,const QGridLayout* battlefield)
 void MyFrame::setShip(const int x,const int y,const QGridLayout* battlefield)
 {
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
+    frame->setStyleSheet("background-color: rgb(0,250,0)");
     frame->setFrameStyle(QFrame::Box | QFrame::Raised);
 }
 
@@ -53,6 +56,7 @@ bool MyFrame::isShip(const int x,const int y,const QGridLayout* battlefield)
 void MyFrame::setMiss(const int x,const int y, const QGridLayout* battlefield)
 {
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
+    frame->setStyleSheet("background-color: rgb(0,0,250)");
     frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 }
 
@@ -69,6 +73,7 @@ bool MyFrame::isMiss(const int x,const int y,const QGridLayout* battlefield)
 void MyFrame::setHit(const int x,const int y,const QGridLayout* battlefield)
 {
     MyFrame* frame = qobject_cast<MyFrame*>(battlefield->itemAtPosition(x,y)->widget());
+    frame->setStyleSheet("background-color: rgb(250,0,0)");
     frame->setFrameStyle(QFrame::Box | QFrame::Sunken);
 }
 
