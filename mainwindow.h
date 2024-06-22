@@ -34,6 +34,7 @@ private:
     void clearBattlefields();
     void printHelp();
 
+    std::tuple<QString,int> getIpAndPortFromInput(QString);
     QLabel* getLabelFromChar(char);
     QLabel* getLabelFromInt(int);
 };

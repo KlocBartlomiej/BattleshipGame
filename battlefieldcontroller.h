@@ -2,9 +2,12 @@
 #define BATTLEFIELDCONTROLLER_H
 
 #include <QGridLayout>
+#include <QTextEdit>
 #include "shipsetter.h"
 #include "myframe.h"
 #include "gamelogic.h"
+#include "connectionToPlayer.h"
+#include "otherplayer.h"
 
 class BattlefieldController
 {
@@ -12,10 +15,11 @@ class BattlefieldController
     QGridLayout* enemyBattlefield;
 
 public:
-    BattlefieldController(QGridLayout*, QGridLayout*,const bool);
+    BattlefieldController(QGridLayout*, QGridLayout*, QTextEdit*, const bool);
 
     ShipSetter* shipSetter;
     GameLogic* gameInstance;
+    ConnectionToPlayer* connectionToPlayer;
     MyFrame* setNew(MyFrame*,bool);
 };
 

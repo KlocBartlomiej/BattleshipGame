@@ -4,10 +4,12 @@
 #include "opponent.h"
 
 #include <tuple>
+#include <QTcpSocket>
 
 class OtherPlayer : public Opponent
 {
-    bool isPlayerReady;
+    bool _isPlayerReady;
+    QTcpSocket* socket;
 public:
     OtherPlayer();
 
@@ -20,7 +22,8 @@ public:
     void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>);
 
     void setPlayerReady(const bool);
-    bool isplayerReady();
+    void setSocket(QTcpSocket*);
+    bool isPlayerReady();
 };
 
 #endif // OTHERPLAYER_H

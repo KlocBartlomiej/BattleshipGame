@@ -1,7 +1,7 @@
 #include "otherplayer.h"
 
 OtherPlayer::OtherPlayer()
-    : isPlayerReady(false){}
+    : _isPlayerReady(false){}
 
 std::optional<std::list<std::tuple<int,int>>> OtherPlayer::takeShot(int,int)
 {
@@ -24,18 +24,26 @@ void OtherPlayer::hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int
 
 }
 
-void OtherPlayer::setPlayerReady(const bool isBotEnabled)
+void OtherPlayer::setPlayerReady(const bool isPlayerReady)
 {
-    this->isPlayerReady = isBotEnabled;
+    if (socket->isOpen())
+    {
+        this->_isPlayerReady = isPlayerReady;
+    }
 }
 
-bool OtherPlayer::isplayerReady()
+bool OtherPlayer::isPlayerReady()
 {
-    return isPlayerReady;
+    return _isPlayerReady;
 }
 
 bool OtherPlayer::hasOpponentLost()
 {
     auto placeHolder = false;
     return placeHolder;
+}
+
+void OtherPlayer::setSocket(QTcpSocket* socket)
+{
+    this->socket = socket;
 }

@@ -3,9 +3,11 @@
 
 #include <QGridLayout>
 #include <QObject>
+#include <QTcpSocket>
 
 #include "opponent.h"
 #include "ship.h"
+#include "otherplayer.h"
 #include "myframe.h"
 
 class GameLogic : public QObject
@@ -38,6 +40,7 @@ public:
 public slots:
     void playerShipsAreReady(std::list<Ship>);
     void enemyBattlefieldClickOn(const int, const int);
+    void newPlayerConnected(QTcpSocket*);
 
 signals:
     void gameEnded(const QString);

@@ -32,7 +32,7 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
 {
     if(!isGameStarted) { return; }
     if(opponent == nullptr) { return; }
-    if(!opponent->isplayerReady()) { return; }
+    if(!opponent->isPlayerReady()) { return; }
     if(std::find(shotsFired.begin(),shotsFired.end(),std::make_tuple(x,y)) != shotsFired.end())
     {
         return;
@@ -93,7 +93,7 @@ void GameLogic::enemyBattlefieldClickOn(const int x, const int y)
     }
 
     int classicGameNumberOfShips = 10;
-    if(enemysSunkenShips == classicGameNumberOfShips)
+    if(opponent->hasOpponentLost())
     {
         return gameFinished("Congratulations :D");
     }
@@ -119,3 +119,11 @@ void GameLogic::playerShipsAreReady(std::list<Ship> ships)
     this->ships = ships;
     opponent->setPlayerReady(true);
 }
+
+void GameLogic::newPlayerConnected(QTcpSocket* socket)
+{
+    OtherPlayer* otherPlayer = new OtherPlayer();
+    otherPlayer->setSocket(socket);
+    otherPlayer->setPlayerReady(true);
+}
+

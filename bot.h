@@ -35,7 +35,7 @@ public:
     void hasMyLastShotSunken(std::optional<mastList>);
 
     void setPlayerReady(const bool);
-    bool isplayerReady();
+    bool isPlayerReady();
 };
 
 #endif // BOT_H

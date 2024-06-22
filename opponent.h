@@ -14,7 +14,7 @@ public:
     virtual void hasMyLastShotHit(const bool) = 0;
     virtual void hasMyLastShotSunken(std::optional<std::list<std::tuple<int,int>>>) = 0;
     virtual void setPlayerReady(const bool) = 0;
-    virtual bool isplayerReady() = 0;
+    virtual bool isPlayerReady() = 0;
 };
 
 #endif // OPPONENT_H

@@ -187,7 +187,7 @@ void Bot::setPlayerReady(const bool isBotEnabled)
     this->isBotEnabled = isBotEnabled;
 }
 
-bool Bot::isplayerReady()
+bool Bot::isPlayerReady()
 {
     return isBotEnabled;
 }

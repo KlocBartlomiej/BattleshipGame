@@ -10,7 +10,6 @@
 class ShipSetter : public QObject
 {
     Q_OBJECT
-
     QGridLayout* battlefield;
     std::list<Ship> ships;
     std::list<std::tuple<int,int>> temporary;

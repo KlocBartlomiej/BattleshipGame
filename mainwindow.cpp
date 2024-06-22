@@ -4,11 +4,11 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , battlefieldController(nullptr,nullptr,false)
+    , battlefieldController(nullptr,nullptr,nullptr,false)
 {
     ui->setupUi(this);
 
-    battlefieldController = BattlefieldController(ui->battlefield, ui->enemyBattlefield,false);
+    battlefieldController = BattlefieldController(ui->battlefield, ui->enemyBattlefield, ui->chat, false);
 
     QObject::connect(battlefieldController.gameInstance, &GameLogic::gameEnded, this, &MainWindow::gameEnded);
 
@@ -107,40 +107,51 @@ void MainWindow::printHelp()
 {
     ui->chat->append("You can choose:\
         \ntype \"/bot\" to start new game agains the computer\
-        \nTODO - type \"/connect\" to start a game agains player which will connect to you\
-        \nTODO - type \"/newGameWithTheSamePlayer\" to start another game with the same player without connecting\
-        \ntype \"/rotate\" to change ship orientation\
+        \ntype \"/rotate\" to change ship orientation during placing ships\
+        \ntype \"/listenForConnection\" to wait for another player to join\
+        \ntype \"/connect\" to start a game agains player which awaits (require IP:port)\
+        \n       eg. /connect 168.192.0.11:6969\
     ");
 }
 
 void MainWindow::on_send_clicked()
 {
     QString userInput = ui->input->toPlainText();
-    if (userInput == "/rotate" || userInput == "/rotate\n")
+    if (userInput.startsWith("/rotate"))
     {
         battlefieldController.shipSetter->changeDrawingDirection();
+        ui->input->clear();
         return;
     }
     if(userInput.startsWith("/") and !battlefieldController.gameInstance->hasGameStarted())
     {
         qDebug() << "userInput: " << userInput;
-        if(userInput == "/bot" || userInput == "/bot\n")
+        if(userInput.startsWith("/bot"))
         {
             qDebug() << "/bot option was choosen";
             prepareBattlefield();
             battlefieldController.gameInstance->setOpponentInstance(
                 new Bot(ui->enemyBattlefield));
         }
-        else if(userInput == "/connect" || userInput == "/connect\n")
+        else if(userInput.startsWith("/listenForConnection"))
         {
+            qDebug() << "/listenForConnection option was choosen";
             prepareBattlefield();
-            // TODO establishConnection(); or wait for player to connect (print ip and port in the chat)
-            //battlefieldController.gameInstance->setOpponentInstance(new OtherPlayer());
+            std::tuple<QString,int> connectionData =
+                battlefieldController.connectionToPlayer->startListening();
+            ui->chat->append("Provide IP:port to the second player: "
+                             + std::get<0>(connectionData) + ":" + QString::number(std::get<1>(connectionData)));
+            //TODO look at below todo
         }
-        else if(userInput == "/newGameWithTheSamePlayer" || userInput == "/newGameWithTheSamePlayer\n")
+        else if(userInput.startsWith("/connect"))
         {
+            qDebug() << "/connect option was choosen";
             prepareBattlefield();
-            //startGameWithPlayer;
+            std::tuple<const QString, const int> ipAndPort = getIpAndPortFromInput(userInput);
+            battlefieldController.connectionToPlayer->connectToPlayer(std::get<0>(ipAndPort), std::get<1>(ipAndPort));
+            // TODO when connecting to other player or waiting for signal
+            // I need to set up other player instance on playerConnected(socket) signal call
+            // battlefieldController.gameInstance->setOpponentInstance(new OtherPlayer(socket));
         }
         else
         {
@@ -151,6 +162,12 @@ void MainWindow::on_send_clicked()
     }
     ui->chat->append(userInput);
     ui->input->clear();
+}
+
+std::tuple<QString,int> MainWindow::getIpAndPortFromInput(QString userInput)
+{
+    QStringList list = userInput.split(" ")[1].split(":");
+    return std::make_tuple(list.first(),list.last().toInt());
 }
 
 //TODO create my own keyPressed(QEvent::KeyPress *event)

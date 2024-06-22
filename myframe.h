@@ -4,7 +4,8 @@
 #include <QFrame>
 #include <QGridLayout>
 
-class MyFrame : public QFrame{
+class MyFrame : public QFrame
+{
     Q_OBJECT
     int x,y;
     bool isShipHidden;
